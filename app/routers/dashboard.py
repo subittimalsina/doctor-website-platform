@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import Appointment, SupportTicket
+from app.services.announcement_service import AnnouncementService
 from app.services.auth_service import require_authenticated_user, user_can_manage_site
 
 router = APIRouter(tags=["dashboard"])
@@ -34,6 +35,7 @@ def user_dashboard(
         .limit(5)
         .all()
     )
+    announcements = AnnouncementService.list_published(db)[:5]
 
     return templates.TemplateResponse(
         "dashboard.html",
@@ -42,5 +44,6 @@ def user_dashboard(
             "user": user,
             "appointments": appointments,
             "tickets": tickets,
+            "announcements": announcements,
         },
     )

@@ -725,6 +725,22 @@ textarea:focus {
   box-shadow: 0 0 0 1px #bfe3d6 inset, var(--shadow);
 }
 
+.announcement-item {
+  border-left: 6px solid #a7c8bc;
+}
+
+.announcement-normal {
+  border-left-color: #98c1b1;
+}
+
+.announcement-high {
+  border-left-color: #f0a14a;
+}
+
+.announcement-critical {
+  border-left-color: #dd6254;
+}
+
 .table-search-wrap {
   margin-bottom: 0.7rem;
 }

@@ -1,6 +1,7 @@
 from app.routers import (
     admin,
     ai,
+    announcements,
     api,
     appointments,
     auth,
@@ -10,6 +11,7 @@ from app.routers import (
     notifications,
     operations,
     public,
+    refills,
     records,
     support,
 )
@@ -17,6 +19,7 @@ from app.routers import (
 __all__ = [
     "admin",
     "ai",
+    "announcements",
     "api",
     "appointments",
     "auth",
@@ -26,6 +29,7 @@ __all__ = [
     "notifications",
     "operations",
     "public",
+    "refills",
     "records",
     "support",
 ]

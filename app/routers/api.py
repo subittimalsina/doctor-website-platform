@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models import Appointment, ContactLead, Invoice, MedicalRecord, SupportTicket, User
+from app.models import Announcement, Appointment, ContactLead, Invoice, MedicalRecord, RefillRequest, SupportTicket, User
 from app.services.analytics_service import AnalyticsService
 from app.services.auth_service import require_roles
 from app.services.content_service import ContentService
@@ -92,9 +92,11 @@ def public_counts(db: Session = Depends(get_db)):
     return {
         "appointments": db.query(Appointment).count(),
         "support_tickets": db.query(SupportTicket).count(),
+        "refill_requests": db.query(RefillRequest).count(),
         "invoices": db.query(Invoice).count(),
         "contact_leads": db.query(ContactLead).count(),
         "medical_records": db.query(MedicalRecord).count(),
+        "announcements": db.query(Announcement).count(),
     }
 
 
@@ -114,4 +116,44 @@ def my_records_api(db: Session = Depends(get_db), user=Depends(require_roles("pa
             "updated_at": r.updated_at.isoformat(),
         }
         for r in rows
+    ]
+
+
+@router.get("/announcements")
+def announcements_api(db: Session = Depends(get_db)):
+    rows = db.query(Announcement).order_by(Announcement.created_at.desc()).all()
+    return [
+        {
+            "id": ann.id,
+            "title": ann.title,
+            "content": ann.content,
+            "importance": ann.importance,
+            "status": ann.status,
+            "publish_start": ann.publish_start.isoformat(),
+            "publish_end": ann.publish_end.isoformat(),
+            "created_by": ann.created_by,
+        }
+        for ann in rows
+    ]
+
+
+@router.get("/refills/my")
+def my_refills_api(db: Session = Depends(get_db), user=Depends(require_roles("patient", "doctor", "admin"))):
+    query = db.query(RefillRequest)
+    if user.role == "patient":
+        query = query.filter(RefillRequest.patient_id == user.id)
+    rows = query.order_by(RefillRequest.updated_at.desc()).all()
+    return [
+        {
+            "id": row.id,
+            "patient_id": row.patient_id,
+            "medication_name": row.medication_name,
+            "dosage": row.dosage,
+            "current_supply_days": row.current_supply_days,
+            "pharmacy_name": row.pharmacy_name,
+            "status": row.status,
+            "reviewed_by": row.reviewed_by,
+            "updated_at": row.updated_at.isoformat(),
+        }
+        for row in rows
     ]

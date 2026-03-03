@@ -12,8 +12,10 @@
     <article class="stat"><h3>{{ metrics.appointments_week }}</h3><p>Appointments (7d)</p></article>
     <article class="stat"><h3>{{ metrics.tickets_total }}</h3><p>Tickets</p></article>
     <article class="stat"><h3>{{ metrics.tickets_week }}</h3><p>Tickets (7d)</p></article>
+    <article class="stat"><h3>{{ metrics.refills_total }}</h3><p>Refills</p></article>
     <article class="stat"><h3>{{ metrics.invoices_total }}</h3><p>Invoices</p></article>
     <article class="stat"><h3>{{ metrics.leads_total }}</h3><p>Contact Leads</p></article>
+    <article class="stat"><h3>{{ metrics.announcements_total }}</h3><p>Announcements</p></article>
   </div>
 
   <div class="dash-grid">
@@ -34,6 +36,12 @@
       <h3>Invoices</h3>
       <ul>
         {% for key, value in breakdown.invoices.items() %}
+        <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+      </ul>
+      <h3>Refills</h3>
+      <ul>
+        {% for key, value in breakdown.refills.items() %}
         <li>{{ key }}: {{ value }}</li>
         {% endfor %}
       </ul>

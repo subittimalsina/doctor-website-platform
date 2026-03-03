@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Manage Announcements{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Announcements Manager</h1>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+
+  <article class="card">
+    <h2>Create Announcement</h2>
+    <form method="post" action="/admin/announcements/create" class="form-grid">
+      <label>Title
+        <input type="text" name="title" minlength="4" required />
+      </label>
+      <label>Message
+        <textarea name="content" rows="5" data-minchars="10" required></textarea>
+      </label>
+      <div class="dash-grid">
+        <label>Importance
+          <select name="importance">
+            <option value="normal" selected>Normal</option>
+            <option value="high">High</option>
+            <option value="critical">Critical</option>
+          </select>
+        </label>
+        <label>Status
+          <select name="status">
+            <option value="published" selected>Published</option>
+            <option value="draft">Draft</option>
+            <option value="archived">Archived</option>
+          </select>
+        </label>
+      </div>
+      <div class="dash-grid">
+        <label>Publish Start
+          <input type="datetime-local" name="publish_start" />
+        </label>
+        <label>Publish End
+          <input type="datetime-local" name="publish_end" />
+        </label>
+      </div>
+      <button type="submit" class="btn-primary">Create Announcement</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Existing Announcements</h2>
+    {% if announcements %}
+      {% for ann in announcements %}
+      <form method="post" action="/admin/announcements/{{ ann.id }}/update" class="page-editor">
+        <div class="row-between">
+          <h3>#{{ ann.id }} - {{ ann.title }}</h3>
+          <span class="badge">{{ ann.status }}</span>
+        </div>
+
+        <label>Title
+          <input type="text" name="title" value="{{ ann.title }}" minlength="4" required />
+        </label>
+
+        <label>Message
+          <textarea name="content" rows="4" data-minchars="10" required>{{ ann.content }}</textarea>
+        </label>
+
+        <div class="dash-grid">
+          <label>Importance
+            <select name="importance">
+              <option value="normal" {% if ann.importance == 'normal' %}selected{% endif %}>Normal</option>
+              <option value="high" {% if ann.importance == 'high' %}selected{% endif %}>High</option>
+              <option value="critical" {% if ann.importance == 'critical' %}selected{% endif %}>Critical</option>
+            </select>
+          </label>
+
+          <label>Status
+            <select name="status">
+              <option value="published" {% if ann.status == 'published' %}selected{% endif %}>Published</option>
+              <option value="draft" {% if ann.status == 'draft' %}selected{% endif %}>Draft</option>
+              <option value="archived" {% if ann.status == 'archived' %}selected{% endif %}>Archived</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="dash-grid">
+          <label>Publish Start
+            <input type="datetime-local" name="publish_start" value="{{ ann.publish_start.strftime('%Y-%m-%dT%H:%M') }}" />
+          </label>
+          <label>Publish End
+            <input type="datetime-local" name="publish_end" value="{{ ann.publish_end.strftime('%Y-%m-%dT%H:%M') }}" />
+          </label>
+        </div>
+
+        <div class="row-actions">
+          <button type="submit" class="btn-ghost">Update</button>
+        </div>
+      </form>
+
+      <form method="post" action="/admin/announcements/{{ ann.id }}/delete" class="delete-form">
+        <button type="submit" class="btn-danger">Delete</button>
+      </form>
+      {% endfor %}
+    {% else %}
+      <p>No announcements created yet.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

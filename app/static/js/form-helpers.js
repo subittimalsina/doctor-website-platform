@@ -333,6 +333,10 @@
   }
 
   function setupForm(form) {
+    if (form.dataset.skipValidation === "yes") {
+      return;
+    }
+
     linkPasswordConfirm(form);
     setupLiveValidation(form);
     normalizeSlugField(form);

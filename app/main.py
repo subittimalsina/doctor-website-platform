@@ -7,6 +7,7 @@ from app.database import Base, engine
 from app.routers import (
     admin,
     ai,
+    announcements,
     api,
     appointments,
     auth,
@@ -16,6 +17,7 @@ from app.routers import (
     notifications,
     operations,
     public,
+    refills,
     records,
     support,
 )
@@ -41,8 +43,10 @@ app.include_router(support.router)
 app.include_router(billing.router)
 app.include_router(notifications.router)
 app.include_router(records.router)
+app.include_router(refills.router)
 app.include_router(admin.router)
 app.include_router(operations.router)
 app.include_router(knowledge.router)
+app.include_router(announcements.router)
 app.include_router(ai.router)
 app.include_router(api.router)

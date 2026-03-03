@@ -8,6 +8,7 @@ if str(ROOT) not in sys.path:
 
 from app.database import SessionLocal
 from app.models import (
+    Announcement,
     Appointment,
     AuditLog,
     BlogPost,
@@ -18,6 +19,7 @@ from app.models import (
     MedicalRecord,
     Notification,
     Prescription,
+    RefillRequest,
     SupportMessage,
     SupportTicket,
     User,
@@ -251,6 +253,36 @@ def seed_billing_notifications_and_leads(db, patient):
     db.commit()
 
 
+def seed_announcements(db, doctor):
+    if db.query(Announcement).count() > 0:
+        return
+
+    now = datetime.utcnow()
+    announcements = [
+        Announcement(
+            title="Weekend Telehealth Slots Open",
+            content="New Saturday telehealth slots are available for follow-up consultations.",
+            importance="high",
+            status="published",
+            publish_start=now - timedelta(days=1),
+            publish_end=now + timedelta(days=30),
+            created_by=doctor.email,
+        ),
+        Announcement(
+            title="Support Desk Response Time",
+            content="Support desk currently responds within 4 business hours for non-urgent requests.",
+            importance="normal",
+            status="published",
+            publish_start=now - timedelta(days=2),
+            publish_end=now + timedelta(days=20),
+            created_by=doctor.email,
+        ),
+    ]
+    for ann in announcements:
+        db.add(ann)
+    db.commit()
+
+
 def seed_records(db, patient, doctor):
     if db.query(MedicalRecord).count() == 0:
         record = MedicalRecord(
@@ -274,6 +306,24 @@ def seed_records(db, patient, doctor):
                 notes="Review BP log in next visit.",
             )
         )
+    db.commit()
+
+
+def seed_refills(db, patient):
+    if db.query(RefillRequest).count() > 0:
+        return
+    db.add(
+        RefillRequest(
+            patient_id=patient.id,
+            medication_name="Amlodipine",
+            dosage="5 mg once daily",
+            current_supply_days=4,
+            pharmacy_name="City Pharmacy",
+            pharmacy_phone="+1-555-777-9090",
+            notes="Need refill before weekend.",
+            status="submitted",
+        )
+    )
     db.commit()
 
 
@@ -309,7 +359,9 @@ def main() -> None:
         seed_appointments_and_tickets(db, patient)
         seed_knowledge(db)
         seed_billing_notifications_and_leads(db, patient)
+        seed_announcements(db, doctor)
         seed_records(db, patient, doctor)
+        seed_refills(db, patient)
         seed_audit_logs(db, admin.email)
         print("Seed complete.")
         print("Doctor login: doctor@clinic.local / Doctor@123")

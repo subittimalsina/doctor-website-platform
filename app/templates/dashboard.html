@@ -8,6 +8,7 @@
     <a class="btn-primary" href="/appointments/book">New Appointment</a>
     <a class="btn-ghost" href="/support/new">Open Support Ticket</a>
     <a class="btn-ghost" href="/records/my">My Records</a>
+    <a class="btn-ghost" href="/refills/new">New Refill Request</a>
     <a class="btn-ghost" href="/billing/my">My Billing</a>
     <a class="btn-ghost" href="/notifications">Notifications</a>
     <a class="btn-ghost" href="/ai">Ask AI Assistant</a>
@@ -54,5 +55,22 @@
       {% endif %}
     </article>
   </div>
+
+  <article class="card top-space">
+    <h3>Clinic Announcements</h3>
+    {% if announcements %}
+      <ul class="bullet-list">
+        {% for ann in announcements %}
+        <li>
+          <strong>{{ ann.title }}</strong> ({{ ann.importance }})<br />
+          {{ ann.content }}
+        </li>
+        {% endfor %}
+      </ul>
+      <a href="/announcements">View all announcements</a>
+    {% else %}
+      <p>No active announcements right now.</p>
+    {% endif %}
+  </article>
 </section>
 {% endblock %}

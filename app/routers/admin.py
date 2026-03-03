@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models import Appointment, BlogPost, CMSPage, ContactLead, FAQItem, Invoice, SupportTicket, User
+from app.models import Announcement, Appointment, BlogPost, CMSPage, ContactLead, FAQItem, Invoice, RefillRequest, SupportTicket, User
 from app.services.auth_service import get_current_user, require_authenticated_user, user_can_manage_site
 from app.services.content_service import ContentService
 from app.services.upload_service import UploadService
@@ -27,11 +27,13 @@ def admin_dashboard(
         "patients": db.query(User).filter(User.role == "patient").count(),
         "appointments": db.query(Appointment).count(),
         "tickets": db.query(SupportTicket).count(),
+        "refills": db.query(RefillRequest).count(),
         "pages": len(ContentService.list_pages(db)),
         "invoices": db.query(Invoice).count(),
         "blog_posts": db.query(BlogPost).count(),
         "faqs": db.query(FAQItem).count(),
         "leads": db.query(ContactLead).count(),
+        "announcements": db.query(Announcement).count(),
     }
     recent_appointments = db.query(Appointment).order_by(Appointment.created_at.desc()).limit(8).all()
     recent_tickets = db.query(SupportTicket).order_by(SupportTicket.updated_at.desc()).limit(8).all()

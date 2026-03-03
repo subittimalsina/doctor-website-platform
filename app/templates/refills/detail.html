@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Refill #{{ refill.id }}{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <h1>Refill Request #{{ refill.id }}</h1>
+  <p><strong>Status:</strong> <span class="badge">{{ refill.status }}</span></p>
+
+  <article class="card">
+    <h2>Medication</h2>
+    <p><strong>Name:</strong> {{ refill.medication_name }}</p>
+    <p><strong>Dosage:</strong> {{ refill.dosage }}</p>
+    <p><strong>Supply Remaining:</strong> {{ refill.current_supply_days }} days</p>
+  </article>
+
+  <article class="card">
+    <h2>Pharmacy</h2>
+    <p><strong>Name:</strong> {{ refill.pharmacy_name or 'N/A' }}</p>
+    <p><strong>Phone:</strong> {{ refill.pharmacy_phone or 'N/A' }}</p>
+  </article>
+
+  <article class="card">
+    <h2>Notes</h2>
+    <p>{{ refill.notes or 'No notes provided.' }}</p>
+  </article>
+
+  <article class="card">
+    <h2>Clinic Review</h2>
+    <p><strong>Reviewed By:</strong> {{ refill.reviewed_by or 'Pending review' }}</p>
+    <p><strong>Decision Notes:</strong> {{ refill.decision_note or 'No decision notes yet.' }}</p>
+  </article>
+
+  {% if user.role in ['doctor', 'admin'] %}
+  <article class="card">
+    <h2>Update Status</h2>
+    <form method="post" action="/refills/{{ refill.id }}/status" class="form-grid">
+      <label>Status
+        <select name="status_value">
+          <option value="submitted" {% if refill.status == 'submitted' %}selected{% endif %}>Submitted</option>
+          <option value="in_review" {% if refill.status == 'in_review' %}selected{% endif %}>In Review</option>
+          <option value="approved" {% if refill.status == 'approved' %}selected{% endif %}>Approved</option>
+          <option value="denied" {% if refill.status == 'denied' %}selected{% endif %}>Denied</option>
+          <option value="fulfilled" {% if refill.status == 'fulfilled' %}selected{% endif %}>Fulfilled</option>
+        </select>
+      </label>
+      <label>Decision Note
+        <textarea name="decision_note" rows="4"></textarea>
+      </label>
+      <button type="submit" class="btn-primary">Update Refill</button>
+    </form>
+  </article>
+  {% endif %}
+</section>
+{% endblock %}

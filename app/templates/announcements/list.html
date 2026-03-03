@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Announcements{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <p class="kicker">Clinic Updates</p>
+  <h1>Announcements</h1>
+  <p class="muted">Official clinic notices about schedule, support availability, and policy updates.</p>
+
+  <div class="card-grid single">
+    {% if announcements %}
+      {% for ann in announcements %}
+      <article class="card announcement-item announcement-{{ ann.importance }}">
+        <div class="row-between">
+          <h3>{{ ann.title }}</h3>
+          <span class="badge">{{ ann.importance }}</span>
+        </div>
+        <p>{{ ann.content }}</p>
+        <p class="muted">
+          Active from {{ ann.publish_start.strftime('%Y-%m-%d %H:%M') }}
+          to {{ ann.publish_end.strftime('%Y-%m-%d %H:%M') }}
+        </p>
+      </article>
+      {% endfor %}
+    {% else %}
+      <article class="card">
+        <h3>No active announcements</h3>
+        <p>Please check back later for clinic updates.</p>
+      </article>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

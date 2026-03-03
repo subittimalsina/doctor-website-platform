@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from sqlalchemy.orm import Session
 
-from app.models import Appointment, ContactLead, Invoice, SupportTicket, User
+from app.models import Announcement, Appointment, ContactLead, Invoice, RefillRequest, SupportTicket, User
 
 
 class AnalyticsService:
@@ -18,8 +18,10 @@ class AnalyticsService:
             "appointments_week": db.query(Appointment).filter(Appointment.created_at >= seven_days).count(),
             "tickets_total": db.query(SupportTicket).count(),
             "tickets_week": db.query(SupportTicket).filter(SupportTicket.created_at >= seven_days).count(),
+            "refills_total": db.query(RefillRequest).count(),
             "invoices_total": db.query(Invoice).count(),
             "leads_total": db.query(ContactLead).count(),
+            "announcements_total": db.query(Announcement).count(),
             "generated_at": now.isoformat(),
         }
 
@@ -27,6 +29,7 @@ class AnalyticsService:
     def status_breakdown(db: Session) -> dict:
         appointment_rows = db.query(Appointment.status).all()
         ticket_rows = db.query(SupportTicket.status).all()
+        refill_rows = db.query(RefillRequest.status).all()
         invoice_rows = db.query(Invoice.status).all()
 
         def build(items):
@@ -38,5 +41,6 @@ class AnalyticsService:
         return {
             "appointments": build(appointment_rows),
             "tickets": build(ticket_rows),
+            "refills": build(refill_rows),
             "invoices": build(invoice_rows),
         }

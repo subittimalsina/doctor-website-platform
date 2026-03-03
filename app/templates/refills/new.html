@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Request Medication Refill{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <p class="kicker">Refill Request</p>
+  <h1>Request Medication Refill</h1>
+  <p class="muted">Submit refill details and clinic staff will review your request.</p>
+
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+  {% if success %}<p class="alert success">{{ success }}</p>{% endif %}
+
+  <form method="post" action="/refills/new" class="card form-grid">
+    <label>Medication Name
+      <input type="text" name="medication_name" minlength="2" required />
+    </label>
+    <label>Dosage
+      <input type="text" name="dosage" placeholder="e.g. 5 mg once daily" />
+    </label>
+    <label>Current Supply Remaining (days)
+      <input type="number" name="current_supply_days" min="0" value="0" />
+    </label>
+    <label>Pharmacy Name
+      <input type="text" name="pharmacy_name" />
+    </label>
+    <label>Pharmacy Phone
+      <input type="tel" name="pharmacy_phone" />
+    </label>
+    <label>Additional Notes
+      <textarea name="notes" rows="5"></textarea>
+    </label>
+    <button type="submit" class="btn-primary">Submit Refill Request</button>
+  </form>
+</section>
+{% endblock %}

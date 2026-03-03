@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Manage Refill Requests{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Manage Refill Requests</h1>
+  <article class="card">
+    {% if refills %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Patient ID</th>
+          <th>Medication</th>
+          <th>Dosage</th>
+          <th>Status</th>
+          <th>Update</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in refills %}
+      <tr>
+        <td><a href="/refills/{{ r.id }}">{{ r.id }}</a></td>
+        <td>{{ r.patient_id }}</td>
+        <td>{{ r.medication_name }}</td>
+        <td>{{ r.dosage }}</td>
+        <td><span class="badge">{{ r.status }}</span></td>
+        <td>
+          <form method="post" action="/refills/{{ r.id }}/status" class="form-grid">
+            <select name="status_value">
+              <option value="submitted" {% if r.status == 'submitted' %}selected{% endif %}>Submitted</option>
+              <option value="in_review" {% if r.status == 'in_review' %}selected{% endif %}>In Review</option>
+              <option value="approved" {% if r.status == 'approved' %}selected{% endif %}>Approved</option>
+              <option value="denied" {% if r.status == 'denied' %}selected{% endif %}>Denied</option>
+              <option value="fulfilled" {% if r.status == 'fulfilled' %}selected{% endif %}>Fulfilled</option>
+            </select>
+            <input type="text" name="decision_note" placeholder="Decision note" />
+            <button type="submit" class="btn-ghost">Apply</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>No refill requests available.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}
