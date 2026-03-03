@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}AI Assistant{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <p class="kicker">AI Clinic Assistant</p>
+  <h1>Ask about appointments, support, and clinic information</h1>
+  <p>This assistant gives general operational guidance. It does not provide diagnosis.</p>
+
+  <div class="ai-panel" data-ai-session="{{ session_id }}">
+    <div id="aiMessages" class="ai-messages"></div>
+    <form id="aiForm" class="ai-form">
+      <textarea id="aiInput" placeholder="Type your question..." required></textarea>
+      <button type="submit" class="btn-primary">Send</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

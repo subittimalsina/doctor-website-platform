@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <p class="kicker">Blog Article</p>
+  <h1>{{ post.title }}</h1>
+  <p class="muted">{{ post.created_at.strftime('%Y-%m-%d') }} · {{ post.author }} · Tags: {{ post.tags }}</p>
+  <article class="cms-body">{{ post.body | safe }}</article>
+  <p class="top-space"><a href="/blog">Back to all posts</a></p>
+</section>
+{% endblock %}

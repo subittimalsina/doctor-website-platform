@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}My Billing{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <p class="kicker">Billing</p>
+  <h1>My Invoices</h1>
+  <article class="card">
+    {% if invoices %}
+    <table class="table">
+      <thead><tr><th>Invoice #</th><th>Description</th><th>Amount</th><th>Due</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for i in invoices %}
+      <tr>
+        <td>{{ i.invoice_number }}</td>
+        <td>{{ i.description }}</td>
+        <td>${{ '%.2f'|format(i.amount) }}</td>
+        <td>{{ i.due_date.strftime('%Y-%m-%d') }}</td>
+        <td><span class="badge">{{ i.status }}</span></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No invoices available.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

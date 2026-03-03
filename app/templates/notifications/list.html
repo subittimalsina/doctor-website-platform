@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <p class="kicker">Notifications</p>
+  <h1>Updates for Your Account</h1>
+  {% if notifications %}
+    <div class="card-grid single">
+      {% for n in notifications %}
+      <article class="card {% if not n.is_read %}unread{% endif %}">
+        <div class="row-between">
+          <h3>{{ n.title }}</h3>
+          <span class="badge">{{ n.kind }}</span>
+        </div>
+        <p>{{ n.message }}</p>
+        <p class="muted">{{ n.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        {% if not n.is_read %}
+        <form method="post" action="/notifications/{{ n.id }}/read">
+          <button class="btn-ghost" type="submit">Mark as Read</button>
+        </form>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <article class="card">
+      <p>No notifications yet.</p>
+    </article>
+  {% endif %}
+</section>
+{% endblock %}

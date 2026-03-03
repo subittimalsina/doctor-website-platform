@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Record #{{ record.id }}{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <h1>{{ record.record_title }}</h1>
+  <p><strong>Status:</strong> <span class="badge">{{ record.status }}</span></p>
+  <p><strong>Diagnosis:</strong> {{ record.diagnosis_summary }}</p>
+
+  <article class="card">
+    <h2>Observations</h2>
+    <p>{{ record.observations }}</p>
+  </article>
+
+  <article class="card">
+    <h2>Recommendations</h2>
+    <p>{{ record.recommendations }}</p>
+  </article>
+
+  <article class="card">
+    <h2>Prescriptions</h2>
+    {% if prescriptions %}
+    <table class="table">
+      <thead><tr><th>Medicine</th><th>Dosage</th><th>Schedule</th><th>Duration</th><th>Notes</th>{% if user.role in ['doctor', 'admin'] %}<th>Action</th>{% endif %}</tr></thead>
+      <tbody>
+      {% for p in prescriptions %}
+      <tr>
+        <td>{{ p.medicine_name }}</td>
+        <td>{{ p.dosage }}</td>
+        <td>{{ p.schedule }}</td>
+        <td>{{ p.duration }}</td>
+        <td>{{ p.notes }}</td>
+        {% if user.role in ['doctor', 'admin'] %}
+        <td>
+          <form method="post" action="/records/prescriptions/{{ p.id }}/delete">
+            <button class="btn-danger" type="submit">Delete</button>
+          </form>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No prescriptions for this record.</p>
+    {% endif %}
+  </article>
+
+  {% if user.role in ['doctor', 'admin'] %}
+  <article class="card">
+    <h2>Add Prescription</h2>
+    <form method="post" action="/records/{{ record.id }}/prescriptions" class="form-grid">
+      <label>Medicine Name<input type="text" name="medicine_name" required /></label>
+      <label>Dosage<input type="text" name="dosage" /></label>
+      <label>Schedule<input type="text" name="schedule" /></label>
+      <label>Duration<input type="text" name="duration" /></label>
+      <label>Notes<textarea name="notes" rows="3"></textarea></label>
+      <button class="btn-primary" type="submit">Add Prescription</button>
+    </form>
+  </article>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Manage Blog{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Blog Manager</h1>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+
+  <article class="card">
+    <h2>Create Blog Post</h2>
+    <form method="post" action="/admin/blog/create" class="form-grid">
+      <label>Slug<input name="slug" type="text" required /></label>
+      <label>Title<input name="title" type="text" required /></label>
+      <label>Excerpt<textarea name="excerpt" rows="2"></textarea></label>
+      <label>Body (HTML)<textarea name="body" rows="8"></textarea></label>
+      <label>Author<input name="author" type="text" value="Doctor Team" /></label>
+      <label>Tags<input name="tags" type="text" value="general" /></label>
+      <label>Published
+        <select name="is_published">
+          <option value="yes" selected>Yes</option>
+          <option value="no">No</option>
+        </select>
+      </label>
+      <button class="btn-primary" type="submit">Create Post</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Existing Posts</h2>
+    {% if posts %}
+      {% for p in posts %}
+      <form method="post" action="/admin/blog/{{ p.id }}/update" class="page-editor">
+        <div class="row-between">
+          <h3>{{ p.slug }}</h3>
+          <span class="badge">{{ p.is_published }}</span>
+        </div>
+        <label>Title<input name="title" type="text" value="{{ p.title }}" required /></label>
+        <label>Excerpt<textarea name="excerpt" rows="2">{{ p.excerpt }}</textarea></label>
+        <label>Body<textarea name="body" rows="6">{{ p.body }}</textarea></label>
+        <div class="row-actions">
+          <label>Author<input name="author" type="text" value="{{ p.author }}" /></label>
+          <label>Tags<input name="tags" type="text" value="{{ p.tags }}" /></label>
+          <label>Published
+            <select name="is_published">
+              <option value="yes" {% if p.is_published == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if p.is_published == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </label>
+          <button class="btn-ghost" type="submit">Update</button>
+        </div>
+      </form>
+      <form method="post" action="/admin/blog/{{ p.id }}/delete" class="delete-form">
+        <button class="btn-danger" type="submit">Delete</button>
+      </form>
+      {% endfor %}
+    {% else %}
+      <p>No blog posts available.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

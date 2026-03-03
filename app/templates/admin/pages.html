@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Manage Website Pages{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Website Pages (CMS)</h1>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+  <article class="card">
+    <h2>Create New Page</h2>
+    <form class="form-grid" method="post" action="/admin/pages/create">
+      <label>Slug<input type="text" name="slug" required placeholder="example: diabetes-care" /></label>
+      <label>Title<input type="text" name="title" required /></label>
+      <label>Summary<textarea name="summary" rows="3"></textarea></label>
+      <label>HTML Body<textarea name="body" rows="8" placeholder="<h2>Section</h2><p>...</p>"></textarea></label>
+      <label>Publish
+        <select name="is_published">
+          <option value="yes" selected>Yes</option>
+          <option value="no">No</option>
+        </select>
+      </label>
+      <button class="btn-primary" type="submit">Create Page</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Existing Pages</h2>
+    {% if pages %}
+      {% for p in pages %}
+      <form method="post" action="/admin/pages/{{ p.id }}/update" class="page-editor">
+        <div class="page-head">
+          <h3>{{ p.slug }}</h3>
+          <span class="badge">{{ p.is_published }}</span>
+        </div>
+        <label>Title<input type="text" name="title" value="{{ p.title }}" required /></label>
+        <label>Summary<textarea name="summary" rows="2">{{ p.summary }}</textarea></label>
+        <label>Body<textarea name="body" rows="6">{{ p.body }}</textarea></label>
+        <div class="row-actions">
+          <label>Published
+            <select name="is_published">
+              <option value="yes" {% if p.is_published == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if p.is_published == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </label>
+          <button class="btn-ghost" type="submit">Update</button>
+        </div>
+      </form>
+      <form method="post" action="/admin/pages/{{ p.id }}/delete" class="delete-form">
+        <button class="btn-danger" type="submit">Delete Page</button>
+      </form>
+      {% endfor %}
+    {% else %}
+    <p>No pages created yet.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

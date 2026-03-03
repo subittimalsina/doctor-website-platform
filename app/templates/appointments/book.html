@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <h1>Book Appointment</h1>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+  {% if success %}<p class="alert success">{{ success }}</p>{% endif %}
+  <form method="post" action="/appointments/book" class="form-grid card">
+    <label>Reason for visit
+      <input type="text" name="reason" required maxlength="255" />
+    </label>
+    <label>Preferred date and time
+      <input type="datetime-local" name="appointment_time" required />
+    </label>
+    <label>Additional notes
+      <textarea name="notes" rows="5" placeholder="Include relevant information"></textarea>
+    </label>
+    <button type="submit" class="btn-primary">Submit Request</button>
+  </form>
+</section>
+{% endblock %}

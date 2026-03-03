@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual env
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Databases and runtime files
+*.db
+*.sqlite
+*.sqlite3
+
+# Upload/runtime assets
+app/static/uploads/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

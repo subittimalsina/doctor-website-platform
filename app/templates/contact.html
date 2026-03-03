@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Contact Clinic{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <p class="kicker">Contact</p>
+  <h1>Reach the clinic team</h1>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+  {% if success %}<p class="alert success">{{ success }}</p>{% endif %}
+  <div class="dash-grid">
+    <article class="card">
+      <h3>Clinic Address</h3>
+      <p>CityCare Clinic, 100 Health Street, Suite 400</p>
+      <h3>Phone</h3>
+      <p>+1 (555) 202-1000</p>
+      <h3>Email</h3>
+      <p>info@citycareclinic.local</p>
+      <h3>Emergency</h3>
+      <p>For emergency symptoms, contact local emergency services immediately.</p>
+    </article>
+    <article class="card">
+      <h3>Send Us a Message</h3>
+      <form method="post" action="/contact" class="form-grid">
+        <label>Full Name<input type="text" name="full_name" required /></label>
+        <label>Email<input type="email" name="email" required /></label>
+        <label>Phone<input type="text" name="phone" /></label>
+        <label>Subject<input type="text" name="subject" /></label>
+        <label>Message<textarea name="message" rows="5" required></textarea></label>
+        <button class="btn-primary" type="submit">Submit Inquiry</button>
+      </form>
+    </article>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}FAQ{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <p class="kicker">FAQ</p>
+  <h1>Frequently Asked Questions</h1>
+  {% if faqs %}
+    <div class="faq-list">
+      {% for item in faqs %}
+      <details class="card">
+        <summary>{{ item.question }}</summary>
+        <p class="muted">Category: {{ item.category }}</p>
+        <p>{{ item.answer }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  {% else %}
+    <article class="card">
+      <p>No FAQ content published yet.</p>
+    </article>
+  {% endif %}
+</section>
+{% endblock %}

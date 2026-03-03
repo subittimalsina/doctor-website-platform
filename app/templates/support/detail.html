@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <h1>Ticket #{{ ticket.id }} - {{ ticket.subject }}</h1>
+  <p><strong>Status:</strong> <span class="badge">{{ ticket.status }}</span></p>
+  <p><strong>Priority:</strong> {{ ticket.priority }} | <strong>Category:</strong> {{ ticket.category }}</p>
+
+  <article class="card message-thread">
+    {% for m in messages %}
+      <div class="message message-{{ m.sender_role }}">
+        <strong>{{ m.sender_role|upper }}</strong>
+        <span>{{ m.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+        <p>{{ m.message }}</p>
+      </div>
+    {% endfor %}
+  </article>
+
+  <form class="card form-grid" method="post" action="/support/{{ ticket.id }}/reply">
+    <label>Reply
+      <textarea name="message" rows="5" required></textarea>
+    </label>
+    <button class="btn-primary" type="submit">Send Reply</button>
+  </form>
+</section>
+{% endblock %}

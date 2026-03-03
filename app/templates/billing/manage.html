@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Manage Billing{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Billing Management</h1>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+
+  <article class="card">
+    <h2>Create Invoice</h2>
+    <form method="post" action="/billing/manage/create" class="form-grid">
+      <label>Patient
+        <select name="patient_id" required>
+          {% for p in patients %}
+          <option value="{{ p.id }}">{{ p.full_name }} ({{ p.email }})</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Description<input name="description" type="text" required /></label>
+      <label>Amount<input name="amount" type="number" step="0.01" min="0.01" required /></label>
+      <label>Due in days<input name="due_days" type="number" min="1" value="14" /></label>
+      <button class="btn-primary" type="submit">Create Invoice</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Invoices</h2>
+    {% if invoices %}
+    <table class="table">
+      <thead><tr><th>#</th><th>Patient ID</th><th>Amount</th><th>Due</th><th>Status</th><th>Update</th></tr></thead>
+      <tbody>
+      {% for i in invoices %}
+      <tr>
+        <td>{{ i.invoice_number }}</td>
+        <td>{{ i.user_id }}</td>
+        <td>${{ '%.2f'|format(i.amount) }}</td>
+        <td>{{ i.due_date.strftime('%Y-%m-%d') }}</td>
+        <td>{{ i.status }}</td>
+        <td>
+          <form method="post" action="/billing/{{ i.id }}/status" class="inline-form">
+            <select name="status_value">
+              <option value="unpaid" {% if i.status == 'unpaid' %}selected{% endif %}>Unpaid</option>
+              <option value="paid" {% if i.status == 'paid' %}selected{% endif %}>Paid</option>
+              <option value="overdue" {% if i.status == 'overdue' %}selected{% endif %}>Overdue</option>
+              <option value="cancelled" {% if i.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+            </select>
+            <input type="text" name="note" placeholder="Optional note" />
+            <button class="btn-ghost" type="submit">Apply</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No invoices created yet.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

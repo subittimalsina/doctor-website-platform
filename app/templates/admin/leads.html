@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Contact Leads{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Contact Inquiries</h1>
+  <article class="card">
+    {% if leads %}
+    <table class="table">
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Message</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+      {% for lead in leads %}
+      <tr>
+        <td>{{ lead.full_name }}</td>
+        <td>{{ lead.email }}</td>
+        <td>{{ lead.phone }}</td>
+        <td>{{ lead.subject }}</td>
+        <td>{{ lead.message }}</td>
+        <td>{{ lead.status }}</td>
+        <td>
+          <form method="post" action="/admin/leads/{{ lead.id }}/status" class="inline-form">
+            <select name="status_value">
+              <option value="new" {% if lead.status == 'new' %}selected{% endif %}>New</option>
+              <option value="in_review" {% if lead.status == 'in_review' %}selected{% endif %}>In Review</option>
+              <option value="resolved" {% if lead.status == 'resolved' %}selected{% endif %}>Resolved</option>
+            </select>
+            <button class="btn-ghost" type="submit">Update</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No inquiries yet.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

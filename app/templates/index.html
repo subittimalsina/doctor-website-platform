@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Doctor Website Platform{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="kicker">Modern Clinic Experience</p>
+      <h1>Build and run your doctor website with AI, patient support, and content uploads</h1>
+      <p>
+        This platform lets a doctor manage website pages, upload web files and assets,
+        handle appointment requests, answer support tickets, and offer a guided AI assistant.
+      </p>
+      <div class="cta-row">
+        {% if user %}
+        <a class="btn-primary" href="/appointments/book">Book Appointment</a>
+        {% else %}
+        <a class="btn-primary" href="/auth/register">Start Free Setup</a>
+        {% endif %}
+        <a class="btn-ghost" href="/ai">Try AI Assistant</a>
+      </div>
+      <ul class="stat-row">
+        <li><strong>24/7</strong><span>Patient Support Channel</span></li>
+        <li><strong>AI</strong><span>Website Assistant Included</span></li>
+        <li><strong>CMS</strong><span>Doctor-controlled pages</span></li>
+      </ul>
+    </div>
+    <div class="hero-card">
+      <h3>Doctor Control Center</h3>
+      <ul>
+        <li>Upload website files and media assets</li>
+        <li>Manage appointments and ticket workflows</li>
+        <li>Publish clinic pages with no coding</li>
+        <li>Enable AI helper for patient questions</li>
+      </ul>
+      <a class="btn-primary" href="/admin">Open Dashboard</a>
+    </div>
+  </div>
+</section>
+
+<section class="container section-pad">
+  <h2>Featured Clinic Pages</h2>
+  <div class="card-grid">
+    {% if pages %}
+      {% for page in pages %}
+      <article class="card">
+        <h3>{{ page.title }}</h3>
+        <p>{{ page.summary or 'No summary added yet.' }}</p>
+        <a href="/page/{{ page.slug }}">Read page</a>
+      </article>
+      {% endfor %}
+    {% else %}
+      <article class="card">
+        <h3>No custom pages yet</h3>
+        <p>Sign in as doctor/admin and create CMS pages from Admin -> Website Pages.</p>
+      </article>
+    {% endif %}
+  </div>
+</section>
+
+<section class="strip">
+  <div class="container strip-grid">
+    <article>
+      <h3>Appointments</h3>
+      <p>Patients can request visits online with reasons, notes, and status tracking.</p>
+    </article>
+    <article>
+      <h3>Support Tickets</h3>
+      <p>Centralized issue tracking so every patient request is managed and auditable.</p>
+    </article>
+    <article>
+      <h3>AI Guidance</h3>
+      <p>Conversational helper for navigation and non-diagnostic general clinic guidance.</p>
+    </article>
+  </div>
+</section>
+
+<section class="container section-pad">
+  <h2>Everything in One Platform</h2>
+  <div class="card-grid">
+    <article class="card">
+      <h3>Website CMS</h3>
+      <p>Create clinic pages and update published content from the doctor dashboard.</p>
+      <a href="/admin/pages">Manage Pages</a>
+    </article>
+    <article class="card">
+      <h3>Knowledge Center</h3>
+      <p>Publish blogs and FAQs for common patient education and clinic policies.</p>
+      <a href="/blog">View Blog</a>
+    </article>
+    <article class="card">
+      <h3>Billing and Alerts</h3>
+      <p>Generate invoices and notify patients with in-app notifications.</p>
+      <a href="/billing/my">Open Billing</a>
+    </article>
+    <article class="card">
+      <h3>Admin Reports</h3>
+      <p>Track performance metrics and audit actions across the portal.</p>
+      <a href="/admin/reports">See Reports</a>
+    </article>
+  </div>
+</section>
+{% endblock %}

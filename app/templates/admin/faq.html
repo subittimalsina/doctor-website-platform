@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Manage FAQ{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>FAQ Manager</h1>
+  <article class="card">
+    <h2>Create FAQ Item</h2>
+    <form method="post" action="/admin/faq/create" class="form-grid">
+      <label>Question<input name="question" type="text" required /></label>
+      <label>Answer<textarea name="answer" rows="4" required></textarea></label>
+      <label>Category<input name="category" type="text" value="general" /></label>
+      <label>Order<input name="order_index" type="number" value="0" /></label>
+      <label>Published
+        <select name="is_published">
+          <option value="yes" selected>Yes</option>
+          <option value="no">No</option>
+        </select>
+      </label>
+      <button class="btn-primary" type="submit">Create FAQ</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Existing FAQ Items</h2>
+    {% if faqs %}
+      {% for f in faqs %}
+      <form method="post" action="/admin/faq/{{ f.id }}/update" class="page-editor">
+        <div class="row-between">
+          <h3>{{ f.category }}</h3>
+          <span class="badge">{{ f.is_published }}</span>
+        </div>
+        <label>Question<input name="question" type="text" value="{{ f.question }}" required /></label>
+        <label>Answer<textarea name="answer" rows="4" required>{{ f.answer }}</textarea></label>
+        <div class="row-actions">
+          <label>Category<input name="category" type="text" value="{{ f.category }}" /></label>
+          <label>Order<input name="order_index" type="number" value="{{ f.order_index }}" /></label>
+          <label>Published
+            <select name="is_published">
+              <option value="yes" {% if f.is_published == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if f.is_published == 'no' %}selected{% endif %}>No</option>
+            </select>
+          </label>
+          <button class="btn-ghost" type="submit">Update</button>
+        </div>
+      </form>
+      <form method="post" action="/admin/faq/{{ f.id }}/delete" class="delete-form">
+        <button class="btn-danger" type="submit">Delete</button>
+      </form>
+      {% endfor %}
+    {% else %}
+      <p>No FAQ content found.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

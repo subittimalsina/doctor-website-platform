@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Manage Appointments{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Manage Appointments</h1>
+  <article class="card">
+    {% if appointments %}
+    <table class="table">
+      <thead><tr><th>ID</th><th>Date</th><th>Reason</th><th>Status</th><th>Change</th></tr></thead>
+      <tbody>
+      {% for a in appointments %}
+      <tr>
+        <td>{{ a.id }}</td>
+        <td>{{ a.appointment_time.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{{ a.reason }}</td>
+        <td><span class="badge">{{ a.status }}</span></td>
+        <td>
+          <form method="post" action="/appointments/{{ a.id }}/status" class="inline-form">
+            <select name="status_value">
+              <option value="pending" {% if a.status == 'pending' %}selected{% endif %}>Pending</option>
+              <option value="confirmed" {% if a.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+              <option value="completed" {% if a.status == 'completed' %}selected{% endif %}>Completed</option>
+              <option value="cancelled" {% if a.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+            </select>
+            <button class="btn-ghost" type="submit">Update</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No appointments available.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Analytics and Audit{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Analytics and Audit Report</h1>
+  <p class="muted">Generated at {{ metrics.generated_at }}</p>
+
+  <div class="stats-grid">
+    <article class="stat"><h3>{{ metrics.users_total }}</h3><p>Total Users</p></article>
+    <article class="stat"><h3>{{ metrics.patients_total }}</h3><p>Patients</p></article>
+    <article class="stat"><h3>{{ metrics.appointments_total }}</h3><p>Appointments</p></article>
+    <article class="stat"><h3>{{ metrics.appointments_week }}</h3><p>Appointments (7d)</p></article>
+    <article class="stat"><h3>{{ metrics.tickets_total }}</h3><p>Tickets</p></article>
+    <article class="stat"><h3>{{ metrics.tickets_week }}</h3><p>Tickets (7d)</p></article>
+    <article class="stat"><h3>{{ metrics.invoices_total }}</h3><p>Invoices</p></article>
+    <article class="stat"><h3>{{ metrics.leads_total }}</h3><p>Contact Leads</p></article>
+  </div>
+
+  <div class="dash-grid">
+    <article class="card">
+      <h2>Status Breakdown</h2>
+      <h3>Appointments</h3>
+      <ul>
+        {% for key, value in breakdown.appointments.items() %}
+        <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+      </ul>
+      <h3>Tickets</h3>
+      <ul>
+        {% for key, value in breakdown.tickets.items() %}
+        <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+      </ul>
+      <h3>Invoices</h3>
+      <ul>
+        {% for key, value in breakdown.invoices.items() %}
+        <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>Recent Audit Events</h2>
+      <table class="table">
+        <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Target</th></tr></thead>
+        <tbody>
+          {% for log in logs %}
+          <tr>
+            <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ log.actor_email }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ log.target_type }} #{{ log.target_id }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </article>
+  </div>
+</section>
+{% endblock %}

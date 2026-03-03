@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Manage Medical Records{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <h1>Manage Medical Records</h1>
+  {% if error %}<p class="alert error">{{ error }}</p>{% endif %}
+
+  <article class="card">
+    <h2>Create Record</h2>
+    <form method="post" action="/records/manage/create" class="form-grid">
+      <label>Patient
+        <select name="patient_id" required>
+          {% for p in patients %}
+          <option value="{{ p.id }}">{{ p.full_name }} ({{ p.email }})</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Record Title<input type="text" name="record_title" required /></label>
+      <label>Diagnosis Summary<input type="text" name="diagnosis_summary" /></label>
+      <label>Observations<textarea name="observations" rows="4"></textarea></label>
+      <label>Recommendations<textarea name="recommendations" rows="4"></textarea></label>
+      <button class="btn-primary" type="submit">Create Record</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Existing Records</h2>
+    {% if records %}
+      {% for r in records %}
+      <form method="post" action="/records/{{ r.id }}/update" class="page-editor">
+        <div class="row-between">
+          <h3>Record #{{ r.id }} - Patient {{ r.patient_id }}</h3>
+          <span class="badge">{{ r.status }}</span>
+        </div>
+        <label>Record Title<input type="text" name="record_title" value="{{ r.record_title }}" required /></label>
+        <label>Diagnosis Summary<input type="text" name="diagnosis_summary" value="{{ r.diagnosis_summary }}" /></label>
+        <label>Observations<textarea name="observations" rows="3">{{ r.observations }}</textarea></label>
+        <label>Recommendations<textarea name="recommendations" rows="3">{{ r.recommendations }}</textarea></label>
+        <div class="row-actions">
+          <label>Status
+            <select name="status">
+              <option value="active" {% if r.status == 'active' %}selected{% endif %}>Active</option>
+              <option value="monitoring" {% if r.status == 'monitoring' %}selected{% endif %}>Monitoring</option>
+              <option value="closed" {% if r.status == 'closed' %}selected{% endif %}>Closed</option>
+            </select>
+          </label>
+          <a class="btn-ghost" href="/records/{{ r.id }}">Open</a>
+          <button class="btn-ghost" type="submit">Update</button>
+        </div>
+      </form>
+      <form method="post" action="/records/{{ r.id }}/delete" class="delete-form">
+        <button class="btn-danger" type="submit">Delete Record</button>
+      </form>
+      {% endfor %}
+    {% else %}
+    <p>No records found.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

@@ -1,0 +1,31 @@
+from app.routers import (
+    admin,
+    ai,
+    api,
+    appointments,
+    auth,
+    billing,
+    dashboard,
+    knowledge,
+    notifications,
+    operations,
+    public,
+    records,
+    support,
+)
+
+__all__ = [
+    "admin",
+    "ai",
+    "api",
+    "appointments",
+    "auth",
+    "billing",
+    "dashboard",
+    "knowledge",
+    "notifications",
+    "operations",
+    "public",
+    "records",
+    "support",
+]

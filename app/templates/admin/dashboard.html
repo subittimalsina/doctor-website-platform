@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <p class="kicker">Admin</p>
+  <h1>Doctor Control Center</h1>
+  <div class="stats-grid">
+    <article class="stat"><h3>{{ stats.patients }}</h3><p>Patients</p></article>
+    <article class="stat"><h3>{{ stats.appointments }}</h3><p>Appointments</p></article>
+    <article class="stat"><h3>{{ stats.tickets }}</h3><p>Support Tickets</p></article>
+    <article class="stat"><h3>{{ stats.pages }}</h3><p>Website Pages</p></article>
+    <article class="stat"><h3>{{ stats.invoices }}</h3><p>Invoices</p></article>
+    <article class="stat"><h3>{{ stats.blog_posts }}</h3><p>Blog Posts</p></article>
+    <article class="stat"><h3>{{ stats.faqs }}</h3><p>FAQ Items</p></article>
+    <article class="stat"><h3>{{ stats.leads }}</h3><p>Contact Leads</p></article>
+  </div>
+
+  <div class="dashboard-actions">
+    <a class="btn-primary" href="/admin/pages">Manage Pages</a>
+    <a class="btn-ghost" href="/admin/uploads">Website Uploads</a>
+    <a class="btn-ghost" href="/appointments/manage">Appointments</a>
+    <a class="btn-ghost" href="/support/manage/all">Support Desk</a>
+    <a class="btn-ghost" href="/records/manage">Records</a>
+    <a class="btn-ghost" href="/billing/manage">Billing</a>
+    <a class="btn-ghost" href="/admin/blog">Blog</a>
+    <a class="btn-ghost" href="/admin/faq">FAQ</a>
+    <a class="btn-ghost" href="/admin/leads">Leads</a>
+    <a class="btn-ghost" href="/admin/reports">Reports</a>
+  </div>
+
+  <div class="dash-grid">
+    <article class="card">
+      <h3>Recent Appointments</h3>
+      <table class="table">
+        <thead><tr><th>ID</th><th>Date</th><th>Reason</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for a in recent_appointments %}
+        <tr>
+          <td>{{ a.id }}</td>
+          <td>{{ a.appointment_time.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ a.reason }}</td>
+          <td>{{ a.status }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </article>
+
+    <article class="card">
+      <h3>Recent Tickets</h3>
+      <table class="table">
+        <thead><tr><th>ID</th><th>Subject</th><th>Priority</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for t in recent_tickets %}
+        <tr>
+          <td>{{ t.id }}</td>
+          <td><a href="/support/{{ t.id }}">{{ t.subject }}</a></td>
+          <td>{{ t.priority }}</td>
+          <td>{{ t.status }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </article>
+  </div>
+</section>
+{% endblock %}

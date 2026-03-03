@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}About Clinic Platform{% endblock %}
+{% block content %}
+<section class="container section-pad narrow">
+  <p class="kicker">About the System</p>
+  <h1>Designed for doctors who need control, speed, and patient trust</h1>
+  <p>
+    This website stack combines clinical presentation pages, operational workflows,
+    and patient communication tools in one secure Python backend.
+  </p>
+  <h2>What the doctor can do</h2>
+  <ul class="bullet-list">
+    <li>Publish and edit website pages with a built-in CMS.</li>
+    <li>Upload website files, documents, and media assets from admin dashboard.</li>
+    <li>Track appointment requests with status controls.</li>
+    <li>Respond to support tickets from patients with full conversation history.</li>
+    <li>Offer AI-based website guidance while avoiding diagnosis claims.</li>
+  </ul>
+
+  <h2>Compliance-minded defaults</h2>
+  <p>
+    The platform stores structured logs for appointment and support interactions.
+    For production, configure stronger auth policies, audit integrations, and encryption.
+  </p>
+</section>
+{% endblock %}

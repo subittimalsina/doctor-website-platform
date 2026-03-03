@@ -1,0 +1,39 @@
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/">
+      <span class="brand-mark">+</span>
+      <span>
+        <strong>Doctor Portal</strong>
+        <small>AI-enabled clinic website</small>
+      </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">Menu</button>
+
+    <nav id="navMenu" class="nav-menu">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/services">Services</a>
+      <a href="/contact">Contact</a>
+      <a href="/blog">Blog</a>
+      <a href="/faq">FAQ</a>
+      <a href="/ai">AI Assistant</a>
+      {% if user %}
+        <a href="/appointments/book">Book Visit</a>
+        <a href="/support/new">Support</a>
+        <a href="/records/my">Records</a>
+        <a href="/billing/my">Billing</a>
+        <a href="/notifications">Alerts</a>
+        {% if user.role in ['doctor', 'admin'] %}
+          <a href="/admin">Admin</a>
+        {% else %}
+          <a href="/dashboard">Dashboard</a>
+        {% endif %}
+        <a class="btn-link" href="/auth/logout">Logout</a>
+      {% else %}
+        <a href="/auth/login">Login</a>
+        <a class="btn-link" href="/auth/register">Create Account</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}My Medical Records{% endblock %}
+{% block content %}
+<section class="container section-pad">
+  <p class="kicker">Medical Records</p>
+  <h1>My Records</h1>
+  <article class="card">
+    {% if records %}
+    <table class="table">
+      <thead><tr><th>ID</th><th>Title</th><th>Diagnosis Summary</th><th>Status</th><th>Updated</th></tr></thead>
+      <tbody>
+      {% for record in records %}
+      <tr>
+        <td>{{ record.id }}</td>
+        <td><a href="/records/{{ record.id }}">{{ record.record_title }}</a></td>
+        <td>{{ record.diagnosis_summary }}</td>
+        <td><span class="badge">{{ record.status }}</span></td>
+        <td>{{ record.updated_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No records available yet.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}
