@@ -5,4 +5,4 @@ def test_ai_message(client):
     data = response.json()
     assert "reply" in data
     assert data["reply"]
-    assert data["source"] in {"mock", "openai"}
+    assert data["source"] in {"mock", "openai", "openai_compatible", "ollama"}

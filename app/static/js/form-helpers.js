@@ -333,7 +333,7 @@
   }
 
   function setupForm(form) {
-    if (form.dataset.skipValidation === "yes") {
+    if (form.dataset.skipValidation === "yes" || form.id === "aiForm") {
       return;
     }
 
@@ -344,6 +344,12 @@
     addFormSummary(form);
 
     form.addEventListener("submit", (event) => {
+      // Some live/AJAX forms (like AI chat) call preventDefault in their own
+      // submit handler and manage validation/request flow separately.
+      if (event.defaultPrevented) {
+        return;
+      }
+
       const valid = validateForm(form);
       if (!valid) {
         event.preventDefault();
